@@ -3,9 +3,9 @@ package io.github.nataelienai.dronefeeder.delivery.exception;
 /**
  * Thrown when an entity is not found.
  */
-public class NotFoundException extends RuntimeException {
+public class DeliveryNotFoundException extends RuntimeException {
   
-  public NotFoundException(String message) {
+  public DeliveryNotFoundException(String message) {
     super(message);
   }
 
