@@ -27,7 +27,7 @@ public class DeliveryService {
     return deliveryRepository.findAll();
   }
 
-  public void updateStatus(Long id, Status status) {
+  public Delivery updateStatus(Long id, Status status) {
     Optional<Delivery> optionalDelivery = deliveryRepository.findById(id);
     if (optionalDelivery.isEmpty()) {
       throw new NotFoundException("Delivery not found.");
@@ -36,9 +36,10 @@ public class DeliveryService {
     
     delivery.setStatus(status);
     deliveryRepository.save(delivery);
+    return delivery;
   }
 
-  public void updateDrone(Long id, Long droneId) {
+  public Delivery updateDrone(Long id, Long droneId) {
     Optional<Delivery> optionalDelivery = deliveryRepository.findById(id);
     if (optionalDelivery.isEmpty()) {
       throw new NotFoundException("Delivery not found.");
@@ -53,6 +54,7 @@ public class DeliveryService {
   
     delivery.setDrone(drone);
     deliveryRepository.save(delivery);
+    return delivery;
   }
 
   public void delete(Long id) {
