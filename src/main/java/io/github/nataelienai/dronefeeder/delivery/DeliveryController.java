@@ -8,28 +8,41 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller for handling delivery resource requests.
  */
+@RestController
+@RequestMapping("/delivery")
 public class DeliveryController {
 
-  @Autowired
-  private DeliveryService deliveryService;
+  private final DeliveryService deliveryService;
 
-  @PostMapping("/")
+  @Autowired
+  public DeliveryController(DeliveryService deliveryService) {
+    this.deliveryService = deliveryService;
+  }
+
+  @PostMapping
   public Delivery create(@RequestBody Delivery delivery) {
     return deliveryService.create(delivery);
   }
 
-  @GetMapping("/")
+  @GetMapping
   public List<Delivery> findAll() {
     return deliveryService.findAll();
   }
 
+  @GetMapping("/{id}")
+  public Delivery findById(@PathVariable Long id) {
+    return deliveryService.findById(id);
+  }
+
   @PutMapping("/{id}")
-  public Delivery updateStatus(@PathVariable Long id, @RequestBody Status status) {
-    return deliveryService.updateStatus(id, status);
+  public Delivery update(@PathVariable Long id, @RequestBody Delivery delivery) {
+    return deliveryService.update(id, delivery);
   }
 
   @PutMapping("/{id}/{droneId}")

@@ -13,8 +13,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class DroneService {
 
+  private final DroneRepository droneRepository;
+
   @Autowired
-  private DroneRepository droneRepository;
+  public DroneService(DroneRepository droneRepository) {
+    this.droneRepository = droneRepository;
+  }
 
   /**
    * Saves a drone entity.
@@ -57,7 +61,7 @@ public class DroneService {
    * @param id the id of the delivery to update.
    * @param updatedDrone the new drone.
    * @return the updated drone.
-   * @throws NotFoundException if a drone with {@literal id} does not exist.
+   * @throws DroneNotFoundException if a drone with {@literal id} does not exist.
    */
   @Transactional
   public Drone update(Long id, Drone updatedDrone) {
@@ -75,7 +79,7 @@ public class DroneService {
    * Deletes a drone by its id.
    *
    * @param id the id of the drone to delete.
-   * @throws NotFoundException if a drone with {@literal id} does not exist.
+   * @throws DroneNotFoundException if a drone with {@literal id} does not exist.
    */
   @Transactional
   public void delete(Long id) {

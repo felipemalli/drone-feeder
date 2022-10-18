@@ -27,7 +27,7 @@ public class Delivery {
   @Column(name = "status", nullable = false)
   private Integer status;
 
-  @Column(name = "status_last_modified", nullable = false)
+  @Column(name = "status_last_modified")
   private Instant statusLastModified;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = true)
