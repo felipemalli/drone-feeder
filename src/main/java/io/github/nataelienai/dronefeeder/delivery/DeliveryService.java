@@ -37,10 +37,12 @@ public class DeliveryService {
    * @return the saved delivery.
    */
   @Transactional
-  public Delivery create(Delivery delivery) {
+  public Delivery create(Status status) {
+    Delivery delivery = new Delivery();
+    delivery.setStatus(status);
     delivery.setStatusLastModified(Instant.now());
     return deliveryRepository.save(delivery);
-  }
+  }c
 
   /**
    * Retrieves all deliveries.

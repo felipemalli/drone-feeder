@@ -26,8 +26,8 @@ public class DeliveryController {
   }
 
   @PostMapping
-  public Delivery create(@RequestBody Delivery delivery) {
-    return deliveryService.create(delivery);
+  public Delivery create(@RequestBody Status status) {
+    return deliveryService.create(status);
   }
 
   @GetMapping
