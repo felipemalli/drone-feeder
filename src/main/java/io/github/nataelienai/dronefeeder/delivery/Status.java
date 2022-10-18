@@ -1,8 +1,6 @@
 package io.github.nataelienai.dronefeeder.delivery;
 
-import io.github.nataelienai.dronefeeder.delivery.exception.InvalidStatusValueException;
-import java.util.LinkedList;
-import java.util.List;
+import io.github.nataelienai.dronefeeder.delivery.exception.InvalidDeliveryStatusCodeException;
 
 /**
  * Valid status for deliveries.
@@ -21,20 +19,12 @@ public enum Status {
     return code;
   }
 
-  private static List<String> getStatusNames() {
-    List<String> statusNames = new LinkedList<>();
-    for (Status value : Status.values()) {
-      statusNames.add(value.name());
-    }
-    return statusNames;
-  }
-
   /**
    * Retrieves a status by its code.
    *
    * @param code the code of the status to return.
    * @return the status with the given code.
-   * @throws InvalidStatusValueException if {@literal code} does not exist.
+   * @throws InvalidDeliveryStatusCodeException if {@literal code} does not exist.
    */
   public static Status valueOf(int code) {
     for (Status value : Status.values()) {
@@ -42,8 +32,8 @@ public enum Status {
         return value;
       }
     }
-    throw new InvalidStatusValueException(
-        "Invalid status value, valid values are: " + getStatusNames()
+    throw new InvalidDeliveryStatusCodeException(
+        "Invalid status code: " + code
     );
   }
 }
