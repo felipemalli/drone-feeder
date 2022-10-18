@@ -28,7 +28,7 @@ public class Delivery {
   private Integer status;
 
   @Column(name = "status_last_modified")
-  private Instant statusLastModified = Instant.now();
+  private Instant statusLastModified;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = true)
   @JoinColumn(name = "drone_id", nullable = true)

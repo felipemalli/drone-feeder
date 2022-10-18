@@ -11,7 +11,7 @@ public enum Status {
 
   READY(1), SHIPPED(2), DELIVERED(3);
 
-  private int code;
+  private final int code;
 
   private Status(int code) {
     this.code = code;
