@@ -1,6 +1,6 @@
 package io.github.nataelienai.dronefeeder.delivery;
 
-import io.github.nataelienai.dronefeeder.delivery.exception.InvalidStatusCodeException;
+import io.github.nataelienai.dronefeeder.delivery.exception.InvalidDeliveryStatusCodeException;
 
 /**
  * Valid status for deliveries.
@@ -24,7 +24,7 @@ public enum Status {
    *
    * @param code the code of the status to return.
    * @return the status with the given code.
-   * @throws InvalidStatusCodeException if {@literal code} does not exist.
+   * @throws InvalidDeliveryStatusCodeException if {@literal code} does not exist.
    */
   public static Status valueOf(int code) {
     for (Status value : Status.values()) {
@@ -32,7 +32,7 @@ public enum Status {
         return value;
       }
     }
-    throw new InvalidStatusCodeException(
+    throw new InvalidDeliveryStatusCodeException(
         "Invalid status code: " + code
     );
   }
