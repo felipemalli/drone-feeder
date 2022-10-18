@@ -1,7 +1,6 @@
 package io.github.nataelienai.dronefeeder.delivery;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * Controller for handling delivery resource requests.
+ */
 public class DeliveryController {
-  
+
   @Autowired
   private DeliveryService deliveryService;
 

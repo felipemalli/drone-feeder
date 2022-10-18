@@ -1,5 +1,6 @@
 package io.github.nataelienai.dronefeeder.delivery;
 
+import io.github.nataelienai.dronefeeder.drone.Drone;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import io.github.nataelienai.dronefeeder.drone.Drone;
 
+/**
+ * Entity of a delivery model.
+ */
 @Entity
 @Table(name = "delivery")
 public class Delivery {
