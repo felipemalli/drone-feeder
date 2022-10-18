@@ -8,21 +8,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller for handling delivery resource requests.
  */
+@RestController
+@RequestMapping("/delivery")
 public class DeliveryController {
 
   @Autowired
   private DeliveryService deliveryService;
 
-  @PostMapping("/")
+  @PostMapping
   public Delivery create(@RequestBody Delivery delivery) {
     return deliveryService.create(delivery);
   }
 
-  @GetMapping("/")
+  @GetMapping
   public List<Delivery> findAll() {
     return deliveryService.findAll();
   }
