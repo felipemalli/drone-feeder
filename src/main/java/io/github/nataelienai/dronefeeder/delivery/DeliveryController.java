@@ -1,6 +1,8 @@
 package io.github.nataelienai.dronefeeder.delivery;
 
 import java.util.List;
+
+import io.github.nataelienai.dronefeeder.drone.Drone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,11 @@ public class DeliveryController {
   @GetMapping("/{id}")
   public Delivery findById(@PathVariable Long id) {
     return deliveryService.findById(id);
+  }
+
+  @PutMapping("/{id}")
+  public Drone update(@PathVariable Long id, @RequestBody Delivery delivery) {
+    return deliveryService.update(id, delivery);
   }
 
   @PutMapping("/{id}")
