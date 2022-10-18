@@ -33,7 +33,7 @@ public class DeliveryService {
   /**
    * Saves a delivery entity.
    *
-   * @param delivery the delivery to save.
+   * @param status the delivery status.
    * @return the saved delivery.
    */
   @Transactional
