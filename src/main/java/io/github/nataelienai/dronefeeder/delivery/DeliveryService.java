@@ -45,6 +45,21 @@ public class DeliveryService {
   }
 
   /**
+   * Retrieves a delivery by its id.
+   *
+   * @param id the id of the delivery.
+   * @return the delivery with the given id.
+   * @throws DeliveryNotFoundException if a delivery with {@literal id} does not exist.
+   */
+  public Delivery findById(Long id) {
+    Optional<Delivery> optionalDelivery = deliveryRepository.findById(id);
+    if (optionalDelivery.isEmpty()) {
+      throw new DeliveryNotFoundException("Delivery not found.");
+    }
+    return optionalDelivery.get();
+  }
+
+  /**
    * Updates the status of a delivery.
    *
    * @param id the id of the delivery to update.
