@@ -42,7 +42,7 @@ public class DeliveryService {
     delivery.setStatus(status);
     delivery.setStatusLastModified(Instant.now());
     return deliveryRepository.save(delivery);
-  }c
+  }
 
   /**
    * Retrieves all deliveries.
