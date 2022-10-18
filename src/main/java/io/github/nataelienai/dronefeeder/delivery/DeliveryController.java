@@ -31,6 +31,11 @@ public class DeliveryController {
     return deliveryService.findAll();
   }
 
+  @GetMapping("/{id}")
+  public Delivery findById(@PathVariable Long id) {
+    return deliveryService.findById(id);
+  }
+
   @PutMapping("/{id}")
   public Delivery updateStatus(@PathVariable Long id, @RequestBody Status status) {
     return deliveryService.updateStatus(id, status);
