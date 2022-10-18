@@ -1,8 +1,6 @@
 package io.github.nataelienai.dronefeeder.delivery;
 
 import java.util.List;
-
-import io.github.nataelienai.dronefeeder.drone.Drone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/delivery")
 public class DeliveryController {
 
+  private final DeliveryService deliveryService;
+
   @Autowired
-  private DeliveryService deliveryService;
+  public DeliveryController(DeliveryService deliveryService) {
+    this.deliveryService = deliveryService;
+  }
 
   @PostMapping
   public Delivery create(@RequestBody Delivery delivery) {

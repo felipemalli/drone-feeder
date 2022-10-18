@@ -3,13 +3,13 @@ package io.github.nataelienai.dronefeeder.delivery;
 import io.github.nataelienai.dronefeeder.delivery.exception.DeliveryNotFoundException;
 import io.github.nataelienai.dronefeeder.drone.Drone;
 import io.github.nataelienai.dronefeeder.drone.DroneRepository;
+import io.github.nataelienai.dronefeeder.drone.exception.DroneNotFoundException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import io.github.nataelienai.dronefeeder.drone.exception.DroneNotFoundException;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
 
 /**
  * Service for handling business logic of deliveries.
@@ -17,11 +17,18 @@ import javax.transaction.Transactional;
 @Service
 public class DeliveryService {
 
-  @Autowired
-  private DeliveryRepository deliveryRepository;
+  private final DeliveryRepository deliveryRepository;
+
+  private final DroneRepository droneRepository;
 
   @Autowired
-  private DroneRepository droneRepository;
+  public DeliveryService(
+          DeliveryRepository deliveryRepository,
+          DroneRepository droneRepository
+  ) {
+    this.deliveryRepository = deliveryRepository;
+    this.droneRepository = droneRepository;
+  }
 
   /**
    * Saves a delivery entity.
