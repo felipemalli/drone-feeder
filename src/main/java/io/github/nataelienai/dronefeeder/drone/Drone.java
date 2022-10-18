@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * Entity of a drone model.
+ */
 @Entity
 @Table(name = "drone")
 public class Drone {

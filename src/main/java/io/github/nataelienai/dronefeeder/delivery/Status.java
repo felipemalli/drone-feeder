@@ -4,6 +4,9 @@ import io.github.nataelienai.dronefeeder.delivery.exception.InvalidStatusValueEx
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Valid status for deliveries.
+ */
 public enum Status {
 
   READY(1), SHIPPED(2), DELIVERED(3);
@@ -26,6 +29,13 @@ public enum Status {
     return statusNames;
   }
 
+  /**
+   * Retrieves a status by its code.
+   *
+   * @param code the code of the status to return.
+   * @return the status with the given code.
+   * @throws InvalidStatusValueException if {@literal code} does not exist.
+   */
   public static Status valueOf(int code) {
     for (Status value : Status.values()) {
       if (value.getCode() == code) {
@@ -33,7 +43,7 @@ public enum Status {
       }
     }
     throw new InvalidStatusValueException(
-      "Invalid status value, valid values are: " + getStatusNames()
+        "Invalid status value, valid values are: " + getStatusNames()
     );
   }
 }

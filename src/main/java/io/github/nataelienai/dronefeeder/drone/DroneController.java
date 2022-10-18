@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for handling drone resource requests.
+ */
 @RestController
 @RequestMapping("/drone")
 public class DroneController {

@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * Controller for handling delivery resource requests.
+ */
 public class DeliveryController {
-  
+
   @Autowired
   private DeliveryService deliveryService;
 
