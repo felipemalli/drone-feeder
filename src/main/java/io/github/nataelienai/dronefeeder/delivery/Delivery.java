@@ -30,7 +30,7 @@ public class Delivery {
   @Column(name = "status_last_modified")
   private Instant statusLastModified;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = true)
+  @ManyToOne(fetch = FetchType.EAGER, optional = true)
   @JoinColumn(name = "drone_id", nullable = true)
   private Drone drone;
 

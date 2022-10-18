@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 /**
@@ -52,4 +53,10 @@ public class Drone {
     this.longitude = longitude;
   }
 
+  @PreRemove
+  private void preRemove() {
+    if (deliveries != null) {
+      deliveries.forEach(delivery -> delivery.setDrone(null));
+    }
+  }
 }
