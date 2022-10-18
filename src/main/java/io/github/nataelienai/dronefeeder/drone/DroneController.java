@@ -32,17 +32,17 @@ public class DroneController {
   }
 
   @GetMapping("/{id}")
-  public Drone findById(@PathVariable("id") Long id) {
+  public Drone findById(@PathVariable Long id) {
     return droneService.findById(id);
   }
 
   @PutMapping("/{id}")
-  public Drone update(@PathVariable("id") Long id, @RequestBody Drone drone) {
+  public Drone update(@PathVariable Long id, @RequestBody Drone drone) {
     return droneService.update(id, drone);
   }
 
   @DeleteMapping("/{id}")
-  public void delete(@PathVariable("id") Long id) {
+  public void delete(@PathVariable Long id) {
     droneService.delete(id);
   }
 
