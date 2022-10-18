@@ -41,4 +41,13 @@ public class DroneService {
     drone.setLongitude(updatedDrone.getLongitude());
     return drone;
   }
+
+  @Transactional
+  public void delete(Long id) {
+    boolean droneExists = droneRepository.existsById(id);
+    if (!droneExists) {
+      throw new DroneNotFoundException("Drone not found.");
+    }
+    droneRepository.deleteById(id);
+  }
 }
