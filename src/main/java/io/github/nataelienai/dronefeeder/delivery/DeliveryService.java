@@ -53,7 +53,7 @@ public class DeliveryService {
    * @throws DeliveryNotFoundException if a delivery with {@literal id} does not exist.
    */
   @Transactional
-  public Delivery updateStatus(Long id, Delivery updatedDelivery) {
+  public Delivery update(Long id, Delivery updatedDelivery) {
     Optional<Delivery> optionalDelivery = deliveryRepository.findById(id);
     if (optionalDelivery.isEmpty()) {
       throw new DeliveryNotFoundException("Delivery not found.");
@@ -80,7 +80,7 @@ public class DeliveryService {
       throw new DeliveryNotFoundException("Delivery not found.");
     }
     Delivery delivery = optionalDelivery.get();
-    Optional<Drone> optionalDrone = droneRepository.findById(id);
+    Optional<Drone> optionalDrone = droneRepository.findById(droneId);
     if (optionalDrone.isEmpty()) {
       throw new DroneNotFoundException("Drone not found.");
     }

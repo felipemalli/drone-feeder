@@ -39,13 +39,8 @@ public class DeliveryController {
   }
 
   @PutMapping("/{id}")
-  public Drone update(@PathVariable Long id, @RequestBody Delivery delivery) {
+  public Delivery update(@PathVariable Long id, @RequestBody Delivery delivery) {
     return deliveryService.update(id, delivery);
-  }
-
-  @PutMapping("/{id}")
-  public Delivery updateStatus(@PathVariable Long id, @RequestBody Status status) {
-    return deliveryService.updateStatus(id, status);
   }
 
   @PutMapping("/{id}/{droneId}")
