@@ -7,12 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.github.nataelienai.dronefeeder.delivery.exception.NotFoundException;
+import io.github.nataelienai.dronefeeder.drone.Drone;
+import io.github.nataelienai.dronefeeder.drone.DroneRepository;
 
 @Service
 public class DeliveryService {
 
   @Autowired
   private DeliveryRepository deliveryRepository;
+
+  @Autowired
+  private DroneRepository droneRepository;
   
   public Delivery create(Delivery delivery) {
     return deliveryRepository.save(delivery);
@@ -30,6 +35,23 @@ public class DeliveryService {
     Delivery delivery = optionalDelivery.get();
     
     delivery.setStatus(status);
+    deliveryRepository.save(delivery);
+  }
+
+  public void updateDrone(Long id, Long droneId) {
+    Optional<Delivery> optionalDelivery = deliveryRepository.findById(id);
+    if (optionalDelivery.isEmpty()) {
+      throw new NotFoundException("Delivery not found.");
+    }
+    Delivery delivery = optionalDelivery.get();
+
+    Optional<Drone> optionalDrone = droneRepository.findById(id);
+    if (optionalDrone.isEmpty()) {
+      throw new NotFoundException("Drone not found.");
+    }
+    Drone drone = optionalDrone.get();
+  
+    delivery.setDrone(drone);
     deliveryRepository.save(delivery);
   }
 
