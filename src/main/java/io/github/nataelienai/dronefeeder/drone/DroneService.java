@@ -13,6 +13,7 @@ public class DroneService {
   @Autowired
   private DroneRepository droneRepository;
 
+  @Transactional
   public Drone create(Drone drone) {
     return droneRepository.save(drone);
   }
