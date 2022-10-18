@@ -39,7 +39,6 @@ public class DroneService {
     Drone drone = optionalDrone.get();
     drone.setLatitude(updatedDrone.getLatitude());
     drone.setLongitude(updatedDrone.getLongitude());
-    droneRepository.save(drone);
     return drone;
   }
 }
