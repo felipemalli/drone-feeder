@@ -1,5 +1,6 @@
 package io.github.nataelienai.dronefeeder.video;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +33,7 @@ public class Video {
     return id;
   }
 
+  @JsonIgnore
   public String getBase64() {
     return base64;
   }
