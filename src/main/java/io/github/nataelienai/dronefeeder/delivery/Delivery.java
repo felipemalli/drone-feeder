@@ -21,6 +21,10 @@ import javax.persistence.Table;
 @Table(name = "delivery")
 public class Delivery {
 
+  /**
+   * Attributes.
+   */
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
@@ -43,13 +47,9 @@ public class Delivery {
   @Column(name = "video_id")
   private Long videoId;
 
-  public Long getVideoId() {
-    return videoId;
-  }
-
-  public void setVideoId(Long videoId) {
-    this.videoId = videoId;
-  }
+  /**
+   * Methods.
+   */
 
   public Long getId() {
     return id;
@@ -77,6 +77,14 @@ public class Delivery {
 
   public void setDrone(Drone drone) {
     this.drone = drone;
+  }
+
+  public Long getVideoId() {
+    return videoId;
+  }
+
+  public void setVideoId(Long videoId) {
+    this.videoId = videoId;
   }
 
 }
