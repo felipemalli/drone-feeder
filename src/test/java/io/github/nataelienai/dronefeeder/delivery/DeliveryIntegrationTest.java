@@ -3,6 +3,7 @@ package io.github.nataelienai.dronefeeder.delivery;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.matchesRegex;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -27,6 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import io.github.nataelienai.dronefeeder.drone.Drone;
 import io.github.nataelienai.dronefeeder.drone.DroneRepository;
 
 @SpringBootTest
@@ -157,6 +160,42 @@ class DeliveryIntegrationTest {
     .andExpect(status().isNotFound())
     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
     .andExpect(jsonPath("$.message").value(containsString("Delivery not found")));
+  }
+
+  @Test
+  @DisplayName("Update delivery drone request should return the updated delivery and status code 200 when given valid delivery and drone ids")
+  void updateDeliveryDrone_shouldReturnUpdatedDeliveryAndStatusCode200_givenValidDeliveryAndDroneIds() throws Exception {
+    Delivery delivery = new Delivery();
+    delivery.setStatus(Status.READY);
+    delivery.setStatusLastModified(Instant.now());
+    Delivery savedDelivery = deliveryRepository.save(delivery);
+
+    Drone drone = new Drone();
+    drone.setLatitude("13.404954");
+    drone.setLongitude("52.520008");
+    Drone savedDrone = droneRepository.save(drone);
+
+    MockHttpServletRequestBuilder updateDeliveryDroneRequest = patch("/delivery/"
+        + savedDelivery.getId() + "/drone/" + savedDrone.getId());
+
+    mockMvc.perform(updateDeliveryDroneRequest)
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.id").value(savedDelivery.getId()))
+      .andExpect(jsonPath("$.status").value(savedDelivery.getStatus().name()))
+      .andExpect(jsonPath("$.statusLastModified").value(savedDelivery.getStatusLastModified().toString()))
+      .andExpect(jsonPath("$.drone").value(notNullValue()))
+      .andExpect(jsonPath("$.drone.id").value(savedDrone.getId()))
+      .andExpect(jsonPath("$.drone.latitude").value(savedDrone.getLatitude()))
+      .andExpect(jsonPath("$.drone.longitude").value(savedDrone.getLongitude()));
+
+    Optional<Delivery> optionalDelivery = deliveryRepository.findById(savedDelivery.getId());
+    Delivery updatedDelivery = optionalDelivery.get();
+    Drone deliveryDrone = updatedDelivery.getDrone();
+
+    assertEquals(savedDrone.getId(), deliveryDrone.getId());
+    assertEquals(savedDrone.getLatitude(), deliveryDrone.getLatitude());
+    assertEquals(savedDrone.getLongitude(), deliveryDrone.getLongitude().toString());
   }
 
   @Test
