@@ -85,4 +85,21 @@ class DeliveryIntegrationTest {
       .andExpect(jsonPath("$[0].statusLastModified").value(savedDelivery.getStatusLastModified().toString()))
       .andExpect(jsonPath("$[0].drone").value(nullValue()));
   }
+
+  @Test
+  @DisplayName("Find delivery by id request should return a delivery and status code 200 when given a valid id")
+  void findDeliveryById_shouldReturnDeliveryAndStatusCode200_givenValidId() throws Exception {
+    Delivery delivery = new Delivery();
+    delivery.setStatus(Status.READY);
+    delivery.setStatusLastModified(Instant.now());
+    Delivery savedDelivery = deliveryRepository.save(delivery);
+
+    mockMvc.perform(get("/delivery/" + savedDelivery.getId()))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.id").value(savedDelivery.getId()))
+      .andExpect(jsonPath("$.status").value(savedDelivery.getStatus().name()))
+      .andExpect(jsonPath("$.statusLastModified").value(savedDelivery.getStatusLastModified().toString()))
+      .andExpect(jsonPath("$.drone").value(nullValue()));
+  }
 }
