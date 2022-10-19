@@ -46,14 +46,15 @@ public class VideoController {
    * Upload the file.
    *
    * @param file the file of the video to upload.
+   * @param deliveryId the id of the delivery associate with the video.
    * @return the uploaded file.
-   * @throws IOException in case of an access error.
+   * @throws IOException in case of a access error.
    */
   @PostMapping("/upload/delivery/{deliveryId}")
   @ResponseStatus(HttpStatus.OK)
   public Video upload(
-          @PathVariable Long deliveryId, @RequestBody MultipartFile file
-  ) throws IOException {
+          @RequestBody MultipartFile file, @PathVariable Long deliveryId
+          ) throws IOException {
     return videoService.upload(deliveryId, file);
   }
 

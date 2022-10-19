@@ -58,11 +58,12 @@ public class VideoService {
    * Upload the file.
    *
    * @param file the file of the video to upload.
+   * @param deliveryId the id of the delivery associate with the video.
    * @return the uploaded file.
    * @throws IOException in case of a access error.
    */
   @Transactional
-  public Video upload(Long deliveryId, MultipartFile file) throws IOException {
+  public Video upload(MultipartFile file, Long deliveryId) throws IOException {
     Video video = new Video();
     String fileName = findName(file);
     Long size = file.getSize();
@@ -71,8 +72,9 @@ public class VideoService {
     video.setBase64(Base64.getEncoder().encodeToString(file.getBytes()));
     Delivery delivery = deliveryService.findById(deliveryId);
     video.setDelivery(delivery);
-    delivery.setVideo(video);
-    videoRepository.save(video);
+    Video savedVideo = videoRepository.save(video);
+    Long id = savedVideo.getId();
+    delivery.setVideoId(id);
     return video;
   }
 
