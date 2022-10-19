@@ -43,9 +43,9 @@ public class VideoController {
   }
 
   /**
-   * Upload the video file.
+   * Upload the video.
    *
-   * @param file the file video to upload.
+   * @param file the video file to upload.
    * @param deliveryId the id of the delivery associate with the video.
    * @return the uploaded video file.
    * @throws IOException in case of an access error.
@@ -59,7 +59,7 @@ public class VideoController {
   }
 
   /**
-   * Download the video file.
+   * Download the video.
    *
    * @param id the id of the file video to download.
    * @return the video file for download.
