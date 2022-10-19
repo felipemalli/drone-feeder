@@ -1,5 +1,6 @@
 package io.github.nataelienai.dronefeeder.delivery;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.matchesRegex;
@@ -101,5 +102,14 @@ class DeliveryIntegrationTest {
       .andExpect(jsonPath("$.status").value(savedDelivery.getStatus().name()))
       .andExpect(jsonPath("$.statusLastModified").value(savedDelivery.getStatusLastModified().toString()))
       .andExpect(jsonPath("$.drone").value(nullValue()));
+  }
+
+  @Test
+  @DisplayName("Find delivery by id request should return a message and status code 404 when given an invalid id")
+  void findDeliveryById_shouldReturnMessageAndStatusCode404_givenInvalidId() throws Exception {
+    mockMvc.perform(get("/delivery/404"))
+      .andExpect(status().isNotFound())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.message").value(containsString("Delivery not found")));
   }
 }
