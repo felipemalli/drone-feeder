@@ -62,7 +62,7 @@ public class VideoController {
    * @return the file for download.
    * @throws VideoNotFoundException if a video with {@literal id} does not exist.
    */
-  @PostMapping("/download/{id}")
+  @GetMapping("/download/{id}")
   public ResponseEntity<byte[]> download(@PathVariable Long id) {
     byte[] decodedVideo = videoService.download(id);
     return ResponseEntity.status(HttpStatus.OK)
