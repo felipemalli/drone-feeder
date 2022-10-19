@@ -61,7 +61,7 @@ public class VideoController {
   /**
    * Download the video.
    *
-   * @param id the id of the file video to download.
+   * @param id the id of the video file to download.
    * @return the video file for download.
    * @throws VideoNotFoundException if a video with {@literal id} does not exist.
    */
