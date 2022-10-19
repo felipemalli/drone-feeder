@@ -1,7 +1,7 @@
 package io.github.nataelienai.dronefeeder.exception;
 
 /**
- * Response entity for any exception that occurred during the API runtime.
+ * Response pattern for any exception that occurred during the API runtime.
  */
 public class ApiError {
 

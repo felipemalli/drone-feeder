@@ -19,6 +19,10 @@ import javax.persistence.Table;
 @Table(name = "drone")
 public class Drone {
 
+  /**
+   * Attributes.
+   */
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
@@ -32,6 +36,10 @@ public class Drone {
 
   @OneToMany(mappedBy = "drone", fetch = FetchType.LAZY)
   private List<Delivery> deliveries;
+
+  /**
+   * Methods.
+   */
 
   public Long getId() {
     return id;

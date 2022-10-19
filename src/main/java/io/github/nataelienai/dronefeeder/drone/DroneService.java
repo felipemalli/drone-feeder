@@ -58,7 +58,7 @@ public class DroneService {
   /**
    * Updates a drone by its id.
    *
-   * @param id the id of the delivery to update.
+   * @param id the id of the drone to update.
    * @param updatedDrone the new drone.
    * @return the updated drone.
    * @throws DroneNotFoundException if a drone with {@literal id} does not exist.

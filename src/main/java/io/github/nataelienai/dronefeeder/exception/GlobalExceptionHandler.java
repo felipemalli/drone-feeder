@@ -19,6 +19,8 @@ public class GlobalExceptionHandler {
 
   /**
    * NOT_FOUND exception handler.
+   *
+   * @return the exception message.
    */
   @ExceptionHandler({
       DeliveryNotFoundException.class,
@@ -32,7 +34,9 @@ public class GlobalExceptionHandler {
   }
 
   /**
-   * Returns a custom message if the given exception is about the delivery status,
+   * BAD_REQUEST exception handler.
+   *
+   * @return a custom message if the given exception is about the delivery status,
    * otherwise it returns the exception message.
    */
   @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -46,6 +50,8 @@ public class GlobalExceptionHandler {
 
   /**
    * INTERNAL_SERVER_ERROR exception handler.
+   *
+   * @return the exception message.
    */
   @ExceptionHandler(Exception.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

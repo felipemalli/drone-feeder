@@ -32,13 +32,12 @@ public class VideoService {
   /**
    * Find name of the file.
    *
-   * @param file the file of the video to upload.
-   * @return the file name.
-   * @throws VideoInvalidNameException if the file name is invalid.
+   * @param file the video file to upload.
+   * @return the video file name.
+   * @throws VideoInvalidNameException if the video file name is invalid.
    */
   public String findName(MultipartFile file) {
     String fileName = file.getOriginalFilename();
-
     if (fileName == null) {
       throw new VideoInvalidNameException("Video name in invalid format.");
     }
@@ -55,12 +54,12 @@ public class VideoService {
   }
 
   /**
-   * Upload the file.
+   * Upload the video.
    *
-   * @param file the file of the video to upload.
+   * @param file the video file to upload.
    * @param deliveryId the id of the delivery associate with the video.
-   * @return the uploaded file.
-   * @throws IOException in case of a access error.
+   * @return the uploaded video file.
+   * @throws IOException in case of an access error.
    */
   @Transactional
   public Video upload(MultipartFile file, Long deliveryId) throws IOException {
@@ -79,10 +78,10 @@ public class VideoService {
   }
 
   /**
-   * Download the file.
+   * Download the video.
    *
-   * @param id the id of the file to download.
-   * @return the file for download.
+   * @param id the id of the file video to download.
+   * @return the video file for download.
    * @throws VideoNotFoundException if a video with {@literal id} does not exist.
    */
   public byte[] download(Long id) {

@@ -14,11 +14,15 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
- * Video entity.
+ * Entity of a video model.
  */
 @Entity
 @Table(name = "video")
 public class Video {
+
+  /**
+   * Attributes.
+   */
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,21 +41,12 @@ public class Video {
 
   private Delivery delivery;
 
-  public void setDelivery(Delivery delivery) {
-    this.delivery = delivery;
-  }
+  /**
+   * Methods.
+   */
 
   public Long getId() {
     return id;
-  }
-
-  @JsonIgnore
-  public String getBase64() {
-    return base64;
-  }
-
-  public void setBase64(String base64) {
-    this.base64 = base64;
   }
 
   public String getFileName() {
@@ -69,4 +64,18 @@ public class Video {
   public void setSize(Long size) {
     this.size = size;
   }
+
+  @JsonIgnore
+  public String getBase64() {
+    return base64;
+  }
+
+  public void setBase64(String base64) {
+    this.base64 = base64;
+  }
+
+  public void setDelivery(Delivery delivery) {
+    this.delivery = delivery;
+  }
+
 }
