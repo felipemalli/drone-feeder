@@ -161,7 +161,7 @@ class DeliveryIntegrationTest {
 
   @Test
   @DisplayName("Delete delivery request should return status code 204 when given a valid id")
-  void deleteDelivery_shouldReturnUpdatedDeliveryAndStatusCode200_givenValidIdAndDelivery() throws Exception {
+  void deleteDelivery_shouldReturnStatusCode204_givenValidId() throws Exception {
     Delivery delivery = new Delivery();
     delivery.setStatus(Status.READY);
     delivery.setStatusLastModified(Instant.now());
@@ -172,6 +172,15 @@ class DeliveryIntegrationTest {
 
     Optional<Delivery> optionalDelivery = deliveryRepository.findById(savedDelivery.getId());
     assertTrue(optionalDelivery.isEmpty());
+  }
+
+  @Test
+  @DisplayName("Delete delivery request should return a message and status code 404 when given an invalid id")
+  void deleteDelivery_shouldReturnMessageAndStatusCode404_givenInvalidId() throws Exception {
+    mockMvc.perform(delete("/delivery/500"))
+      .andExpect(status().isNotFound())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.message").value(containsString("Delivery not found")));
   }
 
 }
