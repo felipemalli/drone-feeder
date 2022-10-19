@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
  * Controller for VideoController.
  */
 @RestController
+@RequestMapping("/video")
 public class VideoController {
 
   private final VideoRepository videoRepository;
@@ -34,17 +36,15 @@ public class VideoController {
   /**
    * uploadFile.
    */
-  @PostMapping("/uploadVideo")
+  @PostMapping("/upload")
   @ResponseStatus(HttpStatus.OK)
-  public Video uploadVideo(@RequestBody MultipartFile file) throws IOException {
+  public Video upload(@RequestBody MultipartFile file) throws IOException {
     String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-
     Video video = new Video();
     Long size = file.getSize();
-    video.setBase64(Base64.getEncoder().encodeToString(file.getBytes()));
-    video.setFilename(fileName);
     video.setSize(size);
-
+    video.setBase64(Base64.getEncoder().encodeToString(file.getBytes()));
+    video.setFileName(fileName);
     videoRepository.save(video);
     return video;
   }
@@ -52,10 +52,10 @@ public class VideoController {
   /**
    * downloadFile.
    */
-  @PostMapping("/downloadVideo/{videoId}")
-  public ResponseEntity<?> downloadVideo(@PathVariable Long videoId) {
+  @PostMapping("/download/{id}")
+  public ResponseEntity<?> downloadVideo(@PathVariable Long id) {
 
-    Optional<Video> video = videoRepository.findById(videoId);
+    Optional<Video> video = videoRepository.findById(id);
     if (video.isEmpty()) {
       throw new DeliveryNotFoundException("Video not found.");
     }
@@ -67,7 +67,7 @@ public class VideoController {
     return ResponseEntity.status(HttpStatus.OK)
             .contentType(MediaType.parseMediaType("video/mp4"))
             .header(HttpHeaders.CONTENT_DISPOSITION,
-                    String.format("attachment; filename=video_%s.%s", videoId, "mp4"))
+                    String.format("attachment; filename=video_%s.%s", id, "mp4"))
             .body(decodedVideo);
   }
 

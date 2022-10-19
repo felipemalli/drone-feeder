@@ -21,7 +21,7 @@ public class Video {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  private String filename;
+  private String fileName;
 
   private Long size;
 
@@ -40,12 +40,12 @@ public class Video {
     this.base64 = base64;
   }
 
-  public String getFilename() {
-    return filename;
+  public String getFileName() {
+    return fileName;
   }
 
-  public void setFilename(String filename) {
-    this.filename = filename;
+  public void setFileName(String fileName) {
+    this.fileName = fileName;
   }
 
   public Long getSize() {
