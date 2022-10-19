@@ -129,9 +129,9 @@ class DeliveryIntegrationTest {
     Delivery savedDelivery = deliveryRepository.save(delivery);
 
     MockHttpServletRequestBuilder updateDeliveryRequest = put("/delivery/" + savedDelivery.getId())
-    .accept(MediaType.APPLICATION_JSON)
-    .contentType(MediaType.APPLICATION_JSON)
-    .content("{ \"status\": \"SHIPPED\", \"statusLastModified\": \"2022-10-19T17:20:00Z\" }");
+      .accept(MediaType.APPLICATION_JSON)
+      .contentType(MediaType.APPLICATION_JSON)
+      .content("{ \"status\": \"SHIPPED\", \"statusLastModified\": \"2022-10-19T17:20:00Z\" }");
 
     mockMvc.perform(updateDeliveryRequest)
       .andExpect(status().isOk())
@@ -152,14 +152,14 @@ class DeliveryIntegrationTest {
   @DisplayName("Update delivery request should return a message and status code 404 when given an invalid id")
   void updateDelivery_shouldReturnMessageAndStatusCode404_givenInvalidId() throws Exception {
     MockHttpServletRequestBuilder updateDeliveryRequest = put("/delivery/200")
-    .accept(MediaType.APPLICATION_JSON)
-    .contentType(MediaType.APPLICATION_JSON)
-    .content("{ \"status\": \"SHIPPED\", \"statusLastModified\": \"2022-10-19T17:20:00Z\" }");
+      .accept(MediaType.APPLICATION_JSON)
+      .contentType(MediaType.APPLICATION_JSON)
+      .content("{ \"status\": \"SHIPPED\", \"statusLastModified\": \"2022-10-19T17:20:00Z\" }");
 
     mockMvc.perform(updateDeliveryRequest)
-    .andExpect(status().isNotFound())
-    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-    .andExpect(jsonPath("$.message").value(containsString("Delivery not found")));
+      .andExpect(status().isNotFound())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.message").value(containsString("Delivery not found")));
   }
 
   @Test
@@ -196,6 +196,22 @@ class DeliveryIntegrationTest {
     assertEquals(savedDrone.getId(), deliveryDrone.getId());
     assertEquals(savedDrone.getLatitude(), deliveryDrone.getLatitude());
     assertEquals(savedDrone.getLongitude(), deliveryDrone.getLongitude().toString());
+  }
+
+  @Test
+  @DisplayName("Update delivery drone request should return a message and status code 404 when given an invalid delivery id")
+  void updateDeliveryDrone_shouldReturnMessageAndStatusCode404_givenInvalidDeliveryId() throws Exception {
+    Drone drone = new Drone();
+    drone.setLatitude("13.404954");
+    drone.setLongitude("52.520008");
+    Drone savedDrone = droneRepository.save(drone);
+
+    MockHttpServletRequestBuilder updateDeliveryDroneRequest = patch("/delivery/20/drone/" + savedDrone.getId());
+
+    mockMvc.perform(updateDeliveryDroneRequest)
+      .andExpect(status().isNotFound())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.message").value(containsString("Delivery not found")));
   }
 
   @Test
