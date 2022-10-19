@@ -5,7 +5,7 @@ package io.github.nataelienai.dronefeeder.exception;
  */
 public class ApiError {
 
-  private String message;
+  private final String message;
 
   public ApiError(String message) {
     this.message = message;
