@@ -2,6 +2,7 @@ package io.github.nataelienai.dronefeeder.exception;
 
 import io.github.nataelienai.dronefeeder.delivery.exception.DeliveryNotFoundException;
 import io.github.nataelienai.dronefeeder.drone.exception.DroneNotFoundException;
+import io.github.nataelienai.dronefeeder.video.exception.VideoNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -15,7 +16,8 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler({
       DeliveryNotFoundException.class,
-      DroneNotFoundException.class
+      DroneNotFoundException.class,
+      VideoNotFoundException.class,
   })
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public ApiError handleResourceNotFoundException(RuntimeException exception) {

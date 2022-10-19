@@ -1,6 +1,6 @@
 package io.github.nataelienai.dronefeeder.video;
 
-import io.github.nataelienai.dronefeeder.delivery.exception.DeliveryNotFoundException;
+import io.github.nataelienai.dronefeeder.video.exception.VideoNotFoundException;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Objects;
@@ -45,7 +45,7 @@ public class VideoService {
   public byte[] download(Long id) {
     Optional<Video> video = videoRepository.findById(id);
     if (video.isEmpty()) {
-      throw new DeliveryNotFoundException("Video not found.");
+      throw new VideoNotFoundException("Video not found.");
     }
     String base64 = video.get().getBase64();
     return Base64.getDecoder().decode(base64.getBytes());

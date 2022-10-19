@@ -1,7 +1,6 @@
 package io.github.nataelienai.dronefeeder.video;
 
 import java.io.IOException;
-import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
