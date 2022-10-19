@@ -3,11 +3,14 @@ package io.github.nataelienai.dronefeeder.drone;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.util.List;
+import java.util.Optional;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.junit.jupiter.api.AfterEach;
@@ -50,7 +53,12 @@ class DroneIntegrationTest {
       .andExpect(jsonPath("$.latitude").value("-23.5489"))
       .andExpect(jsonPath("$.longitude").value("-46.6388"));
 
-    assertEquals(droneRepository.findAll().size(), 1);
+    List<Drone> drones = droneRepository.findAll();
+    assertEquals(drones.size(), 1);
+
+    Drone drone = drones.get(0);
+    assertEquals("-23.5489", drone.getLatitude());
+    assertEquals("-46.6388", drone.getLongitude());
   }
 
   @Test
@@ -114,6 +122,11 @@ class DroneIntegrationTest {
       .andExpect(jsonPath("$.id").value(savedDrone.getId()))
       .andExpect(jsonPath("$.latitude").value("-23.5489"))
       .andExpect(jsonPath("$.longitude").value("-46.6388"));
+
+    Optional<Drone> optionalDrone = droneRepository.findById(savedDrone.getId());
+    Drone updatedDrone = optionalDrone.get();
+    assertEquals("-23.5489", updatedDrone.getLatitude());
+    assertEquals("-46.6388", updatedDrone.getLongitude());
   }
 
   @Test
@@ -140,6 +153,9 @@ class DroneIntegrationTest {
 
     mockMvc.perform(delete("/drone/" + savedDrone.getId()))
       .andExpect(status().isNoContent());
+
+    Optional<Drone> optionalDrone = droneRepository.findById(savedDrone.getId());
+    assertTrue(optionalDrone.isEmpty());
   }
 
   @Test
