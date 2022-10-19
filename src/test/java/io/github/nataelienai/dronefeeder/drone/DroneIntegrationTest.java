@@ -66,4 +66,20 @@ class DroneIntegrationTest {
       .andExpect(jsonPath("$[0].latitude").value(savedDrone.getLatitude()))
       .andExpect(jsonPath("$[0].longitude").value(savedDrone.getLongitude()));
   }
+
+  @Test
+  @DisplayName("Find drone by id request should return a drone and status code 200 when given a valid id")
+  void findDroneById_shouldReturnDroneAndStatusCode200_givenValidId() throws Exception {
+    Drone drone = new Drone();
+    drone.setLatitude("13.404954");
+    drone.setLongitude("52.520008");
+    Drone savedDrone = droneRepository.save(drone);
+
+    mockMvc.perform(get("/drone/" + savedDrone.getId()))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.id").value(savedDrone.getId()))
+      .andExpect(jsonPath("$.latitude").value(savedDrone.getLatitude()))
+      .andExpect(jsonPath("$.longitude").value(savedDrone.getLongitude()));
+  }
 }
