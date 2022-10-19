@@ -142,4 +142,18 @@ class DeliveryIntegrationTest {
     assertEquals("2022-10-19T17:20:00Z", updatedDelivery.getStatusLastModified().toString());
     assertNull(updatedDelivery.getDrone());
   }
+
+  @Test
+  @DisplayName("Update delivery request should return a message and status code 404 when given an invalid id")
+  void updateDelivery_shouldReturnMessageAndStatusCode404_givenInvalidId() throws Exception {
+    MockHttpServletRequestBuilder updateDeliveryRequest = put("/delivery/200")
+    .accept(MediaType.APPLICATION_JSON)
+    .contentType(MediaType.APPLICATION_JSON)
+    .content("{ \"status\": \"SHIPPED\", \"statusLastModified\": \"2022-10-19T17:20:00Z\" }");
+
+    mockMvc.perform(updateDeliveryRequest)
+    .andExpect(status().isNotFound())
+    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+    .andExpect(jsonPath("$.message").value(containsString("Delivery not found")));
+  }
 }
