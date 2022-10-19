@@ -9,11 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -111,5 +113,33 @@ class DeliveryIntegrationTest {
       .andExpect(status().isNotFound())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(jsonPath("$.message").value(containsString("Delivery not found")));
+  }
+
+  @Test
+  @DisplayName("Update delivery request should return the updated delivery and status code 200 when given a valid id and delivery")
+  void updateDelivery_shouldReturnUpdatedDeliveryAndStatusCode200_givenValidIdAndDelivery() throws Exception {
+    Delivery delivery = new Delivery();
+    delivery.setStatus(Status.READY);
+    delivery.setStatusLastModified(Instant.now());
+    Delivery savedDelivery = deliveryRepository.save(delivery);
+
+    MockHttpServletRequestBuilder updateDeliveryRequest = put("/delivery/" + savedDelivery.getId())
+    .accept(MediaType.APPLICATION_JSON)
+    .contentType(MediaType.APPLICATION_JSON)
+    .content("{ \"status\": \"SHIPPED\", \"statusLastModified\": \"2022-10-19T17:20:00Z\" }");
+
+    mockMvc.perform(updateDeliveryRequest)
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.id").value(savedDelivery.getId()))
+      .andExpect(jsonPath("$.status").value("SHIPPED"))
+      .andExpect(jsonPath("$.statusLastModified").value("2022-10-19T17:20:00Z"))
+      .andExpect(jsonPath("$.drone").value(nullValue()));
+
+    Optional<Delivery> optionalDelivery = deliveryRepository.findById(savedDelivery.getId());
+    Delivery updatedDelivery = optionalDelivery.get();
+    assertEquals("SHIPPED", updatedDelivery.getStatus().name());
+    assertEquals("2022-10-19T17:20:00Z", updatedDelivery.getStatusLastModified().toString());
+    assertNull(updatedDelivery.getDrone());
   }
 }
