@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -126,6 +127,26 @@ class DroneIntegrationTest {
     mockMvc.perform(updateDroneRequest)
       .andExpect(status().isNotFound())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.message").value(containsString("Drone not found")));
+  }
+
+  @Test
+  @DisplayName("Delete drone request should return status code 204 when given a valid id")
+  void deleteDrone_shouldReturnStatusCode204_givenValidId() throws Exception {
+    Drone drone = new Drone();
+    drone.setLatitude("13.404954");
+    drone.setLongitude("52.520008");
+    Drone savedDrone = droneRepository.save(drone);
+
+    mockMvc.perform(delete("/drone/" + savedDrone.getId()))
+      .andExpect(status().isNoContent());
+  }
+
+  @Test
+  @DisplayName("Delete drone request should return a messge and status code 404 when given an invalid id")
+  void deleteDrone_shouldReturnMessageAndStatusCode404_givenInvalidId() throws Exception {
+    mockMvc.perform(delete("/drone/24"))
+      .andExpect(status().isNotFound())
       .andExpect(jsonPath("$.message").value(containsString("Drone not found")));
   }
 }
