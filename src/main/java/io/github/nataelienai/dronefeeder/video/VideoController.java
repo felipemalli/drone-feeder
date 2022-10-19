@@ -27,10 +27,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class VideoController {
 
   private final VideoRepository videoRepository;
+  private final VideoService videoService;
 
   @Autowired
-  public VideoController(VideoRepository videoRepository) {
+  public VideoController(VideoRepository videoRepository, VideoService videoService) {
     this.videoRepository = videoRepository;
+    this.videoService = videoService;
   }
 
   /**
@@ -39,14 +41,7 @@ public class VideoController {
   @PostMapping("/upload")
   @ResponseStatus(HttpStatus.OK)
   public Video upload(@RequestBody MultipartFile file) throws IOException {
-    String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-    Video video = new Video();
-    Long size = file.getSize();
-    video.setSize(size);
-    video.setBase64(Base64.getEncoder().encodeToString(file.getBytes()));
-    video.setFileName(fileName);
-    videoRepository.save(video);
-    return video;
+    return videoService.upload(file);
   }
 
   /**
