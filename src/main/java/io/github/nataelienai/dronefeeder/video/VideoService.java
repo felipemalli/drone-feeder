@@ -38,12 +38,7 @@ public class VideoService {
     if (originalFilename == null) {
       throw new VideoInvalidNameException("Video name in invalid format.");
     }
-    String filename = StringUtils.cleanPath(originalFilename);
-    String videoNamePattern = "^[a-zA-Z0-9._ -]+\\.(webm|mp4)$";
-    if (!filename.matches(videoNamePattern)) {
-      throw new VideoInvalidNameException("Video name in invalid format.");
-    }
-    return filename;
+    return StringUtils.cleanPath(originalFilename);
   }
 
   /**
