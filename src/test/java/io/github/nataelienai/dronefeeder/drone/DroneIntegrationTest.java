@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -91,5 +92,26 @@ class DroneIntegrationTest {
       .andExpect(status().isNotFound())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(jsonPath("$.message").value(containsString("Drone not found")));
+  }
+
+  @Test
+  @DisplayName("Update drone request should return the updated drone and status code 200 when given a valid id and drone")
+  void updateDrone_shouldReturnUpdatedDroneAndStatusCode200_givenValidIdAndDrone() throws Exception {
+    Drone drone = new Drone();
+    drone.setLatitude("13.404954");
+    drone.setLongitude("52.520008");
+    Drone savedDrone = droneRepository.save(drone);
+
+    MockHttpServletRequestBuilder updateDroneRequest = put("/drone/" + savedDrone.getId())
+    .accept(MediaType.APPLICATION_JSON)
+    .contentType(MediaType.APPLICATION_JSON)
+    .content("{ \"latitude\": \"-23.5489\", \"longitude\": \"-46.6388\" }");
+
+    mockMvc.perform(updateDroneRequest)
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.id").value(savedDrone.getId()))
+      .andExpect(jsonPath("$.latitude").value("-23.5489"))
+      .andExpect(jsonPath("$.longitude").value("-46.6388"));
   }
 }
