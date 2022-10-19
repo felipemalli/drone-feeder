@@ -7,9 +7,11 @@ import static org.hamcrest.Matchers.matchesRegex;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -156,4 +158,20 @@ class DeliveryIntegrationTest {
     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
     .andExpect(jsonPath("$.message").value(containsString("Delivery not found")));
   }
+
+  @Test
+  @DisplayName("Delete delivery request should return status code 204 when given a valid id")
+  void deleteDelivery_shouldReturnUpdatedDeliveryAndStatusCode200_givenValidIdAndDelivery() throws Exception {
+    Delivery delivery = new Delivery();
+    delivery.setStatus(Status.READY);
+    delivery.setStatusLastModified(Instant.now());
+    Delivery savedDelivery = deliveryRepository.save(delivery);
+
+    mockMvc.perform(delete("/delivery/" + savedDelivery.getId()))
+      .andExpect(status().isNoContent());
+
+    Optional<Delivery> optionalDelivery = deliveryRepository.findById(savedDelivery.getId());
+    assertTrue(optionalDelivery.isEmpty());
+  }
+
 }
