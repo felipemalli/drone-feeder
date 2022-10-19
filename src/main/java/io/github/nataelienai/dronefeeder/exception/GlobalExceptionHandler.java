@@ -28,6 +28,10 @@ public class GlobalExceptionHandler {
     return new ApiError(exception.getMessage());
   }
 
+  /**
+   * Returns a custom message if the given exception is about the delivery status,
+   * otherwise it returns the exception message.
+   */
   @ExceptionHandler(HttpMessageNotReadableException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ApiError handleHttpMessageNotReadableException(RuntimeException exception) {
