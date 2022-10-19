@@ -33,13 +33,9 @@ public class Video {
   @Lob
   private String base64;
 
-  @OneToOne(mappedBy = "video", fetch = FetchType.EAGER,
+  @OneToOne(mappedBy = "video", fetch = FetchType.LAZY,
           cascade = CascadeType.ALL, optional = true)
   private Delivery delivery;
-
-  public Delivery getDelivery() {
-    return delivery;
-  }
 
   public void setDelivery(Delivery delivery) {
     this.delivery = delivery;

@@ -1,5 +1,7 @@
 package io.github.nataelienai.dronefeeder.video;
 
+import io.github.nataelienai.dronefeeder.delivery.Delivery;
+import io.github.nataelienai.dronefeeder.delivery.DeliveryService;
 import io.github.nataelienai.dronefeeder.video.exception.VideoInvalidNameException;
 import io.github.nataelienai.dronefeeder.video.exception.VideoNotFoundException;
 import java.io.IOException;
@@ -19,10 +21,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class VideoService {
 
   private final VideoRepository videoRepository;
+  private final DeliveryService deliveryService;
 
   @Autowired
-  public VideoService(VideoRepository videoRepository) {
+  public VideoService(VideoRepository videoRepository, DeliveryService deliveryService) {
     this.videoRepository = videoRepository;
+    this.deliveryService = deliveryService;
   }
 
   /**
@@ -58,13 +62,16 @@ public class VideoService {
    * @throws IOException in case of a access error.
    */
   @Transactional
-  public Video upload(MultipartFile file) throws IOException {
+  public Video upload(Long deliveryId, MultipartFile file) throws IOException {
     Video video = new Video();
     String fileName = findName(file);
     Long size = file.getSize();
     video.setFileName(fileName);
     video.setSize(size);
     video.setBase64(Base64.getEncoder().encodeToString(file.getBytes()));
+    Delivery delivery = deliveryService.findById(deliveryId);
+    video.setDelivery(delivery);
+    delivery.setVideo(video);
     videoRepository.save(video);
     return video;
   }

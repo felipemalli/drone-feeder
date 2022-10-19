@@ -3,7 +3,6 @@ package io.github.nataelienai.dronefeeder.delivery;
 import io.github.nataelienai.dronefeeder.drone.Drone;
 import io.github.nataelienai.dronefeeder.video.Video;
 import java.time.Instant;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
