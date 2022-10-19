@@ -1,7 +1,9 @@
 package io.github.nataelienai.dronefeeder.drone;
 
 import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -44,5 +46,8 @@ class DroneIntegrationTest {
       .andExpect(jsonPath("$.id").value(greaterThan(0)))
       .andExpect(jsonPath("$.latitude").value("-23.5489"))
       .andExpect(jsonPath("$.longitude").value("-46.6388"));
+
+    assertEquals(droneRepository.findAll().size(), 1);
   }
+
 }
