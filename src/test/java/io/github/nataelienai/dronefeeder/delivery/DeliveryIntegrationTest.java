@@ -65,7 +65,8 @@ class DeliveryIntegrationTest {
       .andExpect(jsonPath("$.id").value(greaterThan(0)))
       .andExpect(jsonPath("$.status").value("READY"))
       .andExpect(jsonPath("$.statusLastModified").value(matchesRegex("(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{1,}Z)")))
-      .andExpect(jsonPath("$.drone").value(nullValue()));
+      .andExpect(jsonPath("$.drone").value(nullValue()))
+      .andExpect(jsonPath("$.videoId").value(nullValue()));
 
     List<Delivery> deliveries = deliveryRepository.findAll();
     assertEquals(deliveries.size(), 1);
@@ -74,6 +75,7 @@ class DeliveryIntegrationTest {
     assertEquals("READY", delivery.getStatus().name());
     assertNotNull(delivery.getStatusLastModified());
     assertNull(delivery.getDrone());
+    assertNull(delivery.getVideoId());
   }
 
   @Test
@@ -91,7 +93,8 @@ class DeliveryIntegrationTest {
       .andExpect(jsonPath("$[0].id").value(savedDelivery.getId()))
       .andExpect(jsonPath("$[0].status").value(savedDelivery.getStatus().name()))
       .andExpect(jsonPath("$[0].statusLastModified").value(savedDelivery.getStatusLastModified().toString()))
-      .andExpect(jsonPath("$[0].drone").value(nullValue()));
+      .andExpect(jsonPath("$[0].drone").value(nullValue()))
+      .andExpect(jsonPath("$[0].videoId").value(nullValue()));
   }
 
   @Test
@@ -108,7 +111,8 @@ class DeliveryIntegrationTest {
       .andExpect(jsonPath("$.id").value(savedDelivery.getId()))
       .andExpect(jsonPath("$.status").value(savedDelivery.getStatus().name()))
       .andExpect(jsonPath("$.statusLastModified").value(savedDelivery.getStatusLastModified().toString()))
-      .andExpect(jsonPath("$.drone").value(nullValue()));
+      .andExpect(jsonPath("$.drone").value(nullValue()))
+      .andExpect(jsonPath("$.videoId").value(nullValue()));
   }
 
   @Test
@@ -139,13 +143,15 @@ class DeliveryIntegrationTest {
       .andExpect(jsonPath("$.id").value(savedDelivery.getId()))
       .andExpect(jsonPath("$.status").value("SHIPPED"))
       .andExpect(jsonPath("$.statusLastModified").value("2022-10-19T17:20:00Z"))
-      .andExpect(jsonPath("$.drone").value(nullValue()));
+      .andExpect(jsonPath("$.drone").value(nullValue()))
+      .andExpect(jsonPath("$.videoId").value(nullValue()));
 
     Optional<Delivery> optionalDelivery = deliveryRepository.findById(savedDelivery.getId());
     Delivery updatedDelivery = optionalDelivery.get();
     assertEquals("SHIPPED", updatedDelivery.getStatus().name());
     assertEquals("2022-10-19T17:20:00Z", updatedDelivery.getStatusLastModified().toString());
     assertNull(updatedDelivery.getDrone());
+    assertNull(updatedDelivery.getVideoId());
   }
 
   @Test
@@ -187,7 +193,8 @@ class DeliveryIntegrationTest {
       .andExpect(jsonPath("$.drone").value(notNullValue()))
       .andExpect(jsonPath("$.drone.id").value(savedDrone.getId()))
       .andExpect(jsonPath("$.drone.latitude").value(savedDrone.getLatitude()))
-      .andExpect(jsonPath("$.drone.longitude").value(savedDrone.getLongitude()));
+      .andExpect(jsonPath("$.drone.longitude").value(savedDrone.getLongitude()))
+      .andExpect(jsonPath("$.videoId").value(nullValue()));
 
     Optional<Delivery> optionalDelivery = deliveryRepository.findById(savedDelivery.getId());
     Delivery updatedDelivery = optionalDelivery.get();
