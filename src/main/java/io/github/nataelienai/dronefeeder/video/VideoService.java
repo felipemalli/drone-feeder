@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * VideoService.
+ * Service for handling business logic of videos.
  */
 @Service
 public class VideoService {
