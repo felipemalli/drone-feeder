@@ -54,7 +54,7 @@ public class VideoController {
   @ResponseStatus(HttpStatus.OK)
   public Video upload(
           @RequestBody MultipartFile file, @PathVariable Long deliveryId
-          ) throws IOException {
+  ) throws IOException {
     return videoService.upload(file, deliveryId);
   }
 
