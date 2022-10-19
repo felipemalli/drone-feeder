@@ -215,6 +215,23 @@ class DeliveryIntegrationTest {
   }
 
   @Test
+  @DisplayName("Update delivery drone request should return a message and status code 404 when given an invalid drone id")
+  void updateDeliveryDrone_shouldReturnMessageAndStatusCode404_givenInvalidDroneId() throws Exception {
+    Delivery delivery = new Delivery();
+    delivery.setStatus(Status.READY);
+    delivery.setStatusLastModified(Instant.now());
+    Delivery savedDelivery = deliveryRepository.save(delivery);
+
+    MockHttpServletRequestBuilder updateDeliveryDroneRequest = patch("/delivery/"
+        + savedDelivery.getId() + "/drone/20");
+
+    mockMvc.perform(updateDeliveryDroneRequest)
+      .andExpect(status().isNotFound())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.message").value(containsString("Drone not found")));
+  }
+
+  @Test
   @DisplayName("Delete delivery request should return status code 204 when given a valid id")
   void deleteDelivery_shouldReturnStatusCode204_givenValidId() throws Exception {
     Delivery delivery = new Delivery();
