@@ -3,7 +3,9 @@ package io.github.nataelienai.dronefeeder.video;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Objects;
+import java.util.Optional;
 import javax.transaction.Transactional;
+import io.github.nataelienai.dronefeeder.delivery.exception.DeliveryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -35,6 +37,18 @@ public class VideoService {
     video.setFileName(fileName);
     videoRepository.save(video);
     return video;
+  }
+
+  /**
+   * download.
+   */
+  public byte[] download(Long id) {
+    Optional<Video> video = videoRepository.findById(id);
+    if (video.isEmpty()) {
+      throw new DeliveryNotFoundException("Video not found.");
+    }
+    String base64 = video.get().getBase64();
+    return Base64.getDecoder().decode(base64.getBytes());
   }
 
 }

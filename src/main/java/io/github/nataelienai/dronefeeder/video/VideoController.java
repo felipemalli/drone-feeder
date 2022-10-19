@@ -26,12 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/video")
 public class VideoController {
 
-  private final VideoRepository videoRepository;
   private final VideoService videoService;
 
   @Autowired
-  public VideoController(VideoRepository videoRepository, VideoService videoService) {
-    this.videoRepository = videoRepository;
+  public VideoController(VideoService videoService) {
     this.videoService = videoService;
   }
 
@@ -48,21 +46,14 @@ public class VideoController {
    * downloadFile.
    */
   @PostMapping("/download/{id}")
-  public ResponseEntity<?> downloadVideo(@PathVariable Long id) {
-
-    Optional<Video> video = videoRepository.findById(id);
-    if (video.isEmpty()) {
-      throw new DeliveryNotFoundException("Video not found.");
-    }
-
-    String base64 = video.get().getBase64();
-
-    byte[] decodedVideo = Base64.getDecoder().decode(base64.getBytes());
-
+  public ResponseEntity<?> download(@PathVariable Long id) {
+    byte[] decodedVideo = videoService.download(id);
     return ResponseEntity.status(HttpStatus.OK)
             .contentType(MediaType.parseMediaType("video/mp4"))
-            .header(HttpHeaders.CONTENT_DISPOSITION,
-                    String.format("attachment; filename=video_%s.%s", id, "mp4"))
+            .header(
+                    HttpHeaders.CONTENT_DISPOSITION,
+                    String.format("attachment; filename=delivery_video_%s.%s", id, "mp4")
+            )
             .body(decodedVideo);
   }
 
