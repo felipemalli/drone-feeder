@@ -7,9 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.time.Instant;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -66,4 +68,21 @@ class DeliveryIntegrationTest {
     assertNull(delivery.getDrone());
   }
 
+  @Test
+  @DisplayName("Find all deliveries request should return the all deliveries and status code 200")
+  void findAllDeliveries_shouldReturnAllDeliveriesAndStatusCode200() throws Exception {
+    Delivery delivery = new Delivery();
+    delivery.setStatus(Status.READY);
+    delivery.setStatusLastModified(Instant.now());
+    Delivery savedDelivery = deliveryRepository.save(delivery);
+
+    mockMvc.perform(get("/delivery"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$").isArray())
+      .andExpect(jsonPath("$[0].id").value(savedDelivery.getId()))
+      .andExpect(jsonPath("$[0].status").value(savedDelivery.getStatus().name()))
+      .andExpect(jsonPath("$[0].statusLastModified").value(savedDelivery.getStatusLastModified().toString()))
+      .andExpect(jsonPath("$[0].drone").value(nullValue()));
+  }
 }
