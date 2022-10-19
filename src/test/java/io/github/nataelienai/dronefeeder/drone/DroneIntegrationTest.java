@@ -114,4 +114,18 @@ class DroneIntegrationTest {
       .andExpect(jsonPath("$.latitude").value("-23.5489"))
       .andExpect(jsonPath("$.longitude").value("-46.6388"));
   }
+
+  @Test
+  @DisplayName("Update drone request should return a message and status code 404 when given an invalid id")
+  void updateDrone_shouldReturnMessageAndStatusCode404_givenInvalidId() throws Exception {
+    MockHttpServletRequestBuilder updateDroneRequest = put("/drone/50")
+    .accept(MediaType.APPLICATION_JSON)
+    .contentType(MediaType.APPLICATION_JSON)
+    .content("{ \"latitude\": \"-23.5489\", \"longitude\": \"-46.6388\" }");
+
+    mockMvc.perform(updateDroneRequest)
+      .andExpect(status().isNotFound())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.message").value(containsString("Drone not found")));
+  }
 }
