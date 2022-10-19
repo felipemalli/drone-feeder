@@ -4,7 +4,7 @@ import io.github.nataelienai.dronefeeder.video.exception.VideoInvalidNameExcepti
 import io.github.nataelienai.dronefeeder.video.exception.VideoNotFoundException;
 import java.io.IOException;
 import java.util.Base64;
-import java.util.Objects;
+import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +38,15 @@ public class VideoService {
       throw new VideoInvalidNameException("Video name in invalid format.");
     }
     return StringUtils.cleanPath(filename);
+  }
+
+  /**
+   * Retrieves all videos.
+   *
+   * @return all videos.
+   */
+  public List<Video> findAll() {
+    return videoRepository.findAll();
   }
 
   /**

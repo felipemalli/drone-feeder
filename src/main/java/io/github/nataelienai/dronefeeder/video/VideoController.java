@@ -1,14 +1,14 @@
 package io.github.nataelienai.dronefeeder.video;
 
 import java.io.IOException;
-
-import io.github.nataelienai.dronefeeder.delivery.exception.DeliveryNotFoundException;
+import java.util.List;
 import io.github.nataelienai.dronefeeder.video.exception.VideoNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +29,17 @@ public class VideoController {
   @Autowired
   public VideoController(VideoService videoService) {
     this.videoService = videoService;
+  }
+
+  /**
+   * Retrieves all videos.
+   *
+   * @return all videos.
+   */
+  @GetMapping
+  @ResponseStatus(HttpStatus.OK)
+  public List<Video> findAll() {
+    return videoService.findAll();
   }
 
   /**
