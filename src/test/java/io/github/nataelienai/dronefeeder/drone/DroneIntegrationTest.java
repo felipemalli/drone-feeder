@@ -50,4 +50,20 @@ class DroneIntegrationTest {
     assertEquals(droneRepository.findAll().size(), 1);
   }
 
+  @Test
+  @DisplayName("Find all drones request should return the all drones and status code 200")
+  void findAllDrones_shouldReturnAllDronesAndStatusCode200() throws Exception {
+    Drone drone = new Drone();
+    drone.setLatitude("-23.5489");
+    drone.setLongitude("-46.6388");
+    Drone savedDrone = droneRepository.save(drone);
+
+    mockMvc.perform(get("/drone"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$").isArray())
+      .andExpect(jsonPath("$[0].id").value(savedDrone.getId()))
+      .andExpect(jsonPath("$[0].latitude").value(savedDrone.getLatitude()))
+      .andExpect(jsonPath("$[0].longitude").value(savedDrone.getLongitude()));
+  }
 }
