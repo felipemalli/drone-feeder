@@ -1,14 +1,18 @@
 package io.github.nataelienai.dronefeeder.video;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.github.nataelienai.dronefeeder.delivery.Delivery;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 
 /**
  * Video entity.
@@ -28,6 +32,18 @@ public class Video {
 
   @Lob
   private String base64;
+
+  @OneToOne(mappedBy = "video", fetch = FetchType.EAGER,
+          cascade = CascadeType.ALL, optional = true)
+  private Delivery delivery;
+
+  public Delivery getDelivery() {
+    return delivery;
+  }
+
+  public void setDelivery(Delivery delivery) {
+    this.delivery = delivery;
+  }
 
   public Long getId() {
     return id;

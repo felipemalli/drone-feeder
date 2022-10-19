@@ -1,7 +1,9 @@
 package io.github.nataelienai.dronefeeder.delivery;
 
 import io.github.nataelienai.dronefeeder.drone.Drone;
+import io.github.nataelienai.dronefeeder.video.Video;
 import java.time.Instant;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -33,6 +36,18 @@ public class Delivery {
   @ManyToOne(fetch = FetchType.EAGER, optional = true)
   @JoinColumn(name = "drone_id", nullable = true)
   private Drone drone;
+
+  @OneToOne(fetch = FetchType.EAGER, optional = true)
+  @JoinColumn(name = "video_id", nullable = true)
+  private Video video;
+
+  public Video getVideo() {
+    return video;
+  }
+
+  public void setVideo(Video video) {
+    this.video = video;
+  }
 
   public Long getId() {
     return id;
