@@ -1,5 +1,6 @@
 package io.github.nataelienai.dronefeeder.delivery;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.nataelienai.dronefeeder.drone.Drone;
 import io.github.nataelienai.dronefeeder.video.Video;
 import java.time.Instant;
@@ -36,9 +37,17 @@ public class Delivery {
   @JoinColumn(name = "drone_id", nullable = true)
   private Drone drone;
 
-  @OneToOne(fetch = FetchType.EAGER, optional = true)
-  @JoinColumn(name = "video_id", nullable = true)
+  @JoinColumn(name = "video_id")
+  @OneToOne(targetEntity = Video.class, fetch = FetchType.EAGER)
+  @JsonIgnore
   private Video video;
+
+  @Column(name = "video_id", insertable = false, updatable = false)
+  private Long videoId;
+
+  public Long getVideoId() {
+    return videoId;
+  }
 
   public Video getVideo() {
     return video;
