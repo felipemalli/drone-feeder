@@ -1,6 +1,7 @@
 package io.github.nataelienai.dronefeeder.drone;
 
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -81,5 +82,14 @@ class DroneIntegrationTest {
       .andExpect(jsonPath("$.id").value(savedDrone.getId()))
       .andExpect(jsonPath("$.latitude").value(savedDrone.getLatitude()))
       .andExpect(jsonPath("$.longitude").value(savedDrone.getLongitude()));
+  }
+
+  @Test
+  @DisplayName("Find drone by id request should return a message and status code 404 when given an invalid id")
+  void findDroneById_shouldReturnMessageAndStatusCode404_givenInvalidId() throws Exception {
+    mockMvc.perform(get("/drone/101"))
+      .andExpect(status().isNotFound())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.message").value(containsString("Drone not found")));
   }
 }
