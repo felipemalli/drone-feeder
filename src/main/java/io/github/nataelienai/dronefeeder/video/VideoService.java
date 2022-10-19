@@ -1,5 +1,6 @@
 package io.github.nataelienai.dronefeeder.video;
 
+import io.github.nataelienai.dronefeeder.video.exception.VideoInvalidNameException;
 import io.github.nataelienai.dronefeeder.video.exception.VideoNotFoundException;
 import java.io.IOException;
 import java.util.Base64;
@@ -25,6 +26,21 @@ public class VideoService {
   }
 
   /**
+   * Find name of the file.
+   *
+   * @param file the file of the video to upload.
+   * @return the file name.
+   * @throws VideoInvalidNameException if the file name is invalid.
+   */
+  public String findName(MultipartFile file) {
+    String filename = file.getOriginalFilename();
+    if (filename == null) {
+      throw new VideoInvalidNameException("Video name in invalid format.");
+    }
+    return StringUtils.cleanPath(filename);
+  }
+
+  /**
    * Upload the file.
    *
    * @param file the file of the video to upload.
@@ -33,12 +49,12 @@ public class VideoService {
    */
   @Transactional
   public Video upload(MultipartFile file) throws IOException {
-    String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
     Video video = new Video();
+    String fileName = findName(file);
     Long size = file.getSize();
+    video.setFileName(fileName);
     video.setSize(size);
     video.setBase64(Base64.getEncoder().encodeToString(file.getBytes()));
-    video.setFileName(fileName);
     videoRepository.save(video);
     return video;
   }
