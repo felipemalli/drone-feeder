@@ -25,7 +25,11 @@ public class VideoService {
   }
 
   /**
-   * upload.
+   * Upload the file.
+   *
+   * @param file the file of the video to upload.
+   * @return the uploaded file.
+   * @throws IOException in case of a access error.
    */
   @Transactional
   public Video upload(MultipartFile file) throws IOException {
@@ -40,7 +44,11 @@ public class VideoService {
   }
 
   /**
-   * download.
+   * Download the file.
+   *
+   * @param id the id of the file to download.
+   * @return the file for download.
+   * @throws VideoNotFoundException if a video with {@literal id} does not exist.
    */
   public byte[] download(Long id) {
     Optional<Video> video = videoRepository.findById(id);

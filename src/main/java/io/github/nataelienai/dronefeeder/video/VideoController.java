@@ -1,6 +1,9 @@
 package io.github.nataelienai.dronefeeder.video;
 
 import java.io.IOException;
+
+import io.github.nataelienai.dronefeeder.delivery.exception.DeliveryNotFoundException;
+import io.github.nataelienai.dronefeeder.video.exception.VideoNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Controller for VideoController.
+ * Controller for handling video resource requests.
  */
 @RestController
 @RequestMapping("/video")
@@ -29,7 +32,11 @@ public class VideoController {
   }
 
   /**
-   * uploadFile.
+   * Upload the file.
+   *
+   * @param file the file of the video to upload.
+   * @return the uploaded file.
+   * @throws IOException in case of an access error.
    */
   @PostMapping("/upload")
   @ResponseStatus(HttpStatus.OK)
@@ -38,10 +45,14 @@ public class VideoController {
   }
 
   /**
-   * downloadFile.
+   * Download the file.
+   *
+   * @param id the id of the file to download.
+   * @return the file for download.
+   * @throws VideoNotFoundException if a video with {@literal id} does not exist.
    */
   @PostMapping("/download/{id}")
-  public ResponseEntity<?> download(@PathVariable Long id) {
+  public ResponseEntity<byte[]> download(@PathVariable Long id) {
     byte[] decodedVideo = videoService.download(id);
     return ResponseEntity.status(HttpStatus.OK)
             .contentType(MediaType.parseMediaType("video/mp4"))
