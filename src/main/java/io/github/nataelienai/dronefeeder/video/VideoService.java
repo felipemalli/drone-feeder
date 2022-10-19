@@ -33,11 +33,17 @@ public class VideoService {
    * @throws VideoInvalidNameException if the file name is invalid.
    */
   public String findName(MultipartFile file) {
-    String filename = file.getOriginalFilename();
-    if (filename == null) {
+    String originalFilename = file.getOriginalFilename();
+
+    if (originalFilename == null) {
       throw new VideoInvalidNameException("Video name in invalid format.");
     }
-    return StringUtils.cleanPath(filename);
+    String filename = StringUtils.cleanPath(originalFilename);
+    String videoNamePattern = "^[a-zA-Z0-9._ -]+\\.(webm|mp4)$";
+    if (!filename.matches(videoNamePattern)) {
+      throw new VideoInvalidNameException("Video name in invalid format.");
+    }
+    return filename;
   }
 
   /**
