@@ -1,0 +1,42 @@
+services:
+  api:
+    build: .
+    container_name: api
+    volumes:
+      - ./:/app
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_USER=drone_feeder_user
+      - DATABASE_PASSWORD=drone_feeder_password
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3306
+      - DATABASE_NAME=dronefeeder
+    networks:
+      - api-db
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mysql:8.0
+    container_name: db
+    environment:
+      - MYSQL_USER=drone_feeder_user
+      - MYSQL_PASSWORD=drone_feeder_password
+      - MYSQL_DATABASE=dronefeeder
+      - MYSQL_PORT=3306
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - api-db
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 30s
+volumes:
+  db-data: {}
+networks:
+  api-db: {}
