@@ -2,6 +2,7 @@ package io.github.nataelienai.dronefeeder.video;
 
 import io.github.nataelienai.dronefeeder.delivery.Delivery;
 import io.github.nataelienai.dronefeeder.delivery.DeliveryService;
+import io.github.nataelienai.dronefeeder.video.exception.VideoAlreadyLinkedException;
 import io.github.nataelienai.dronefeeder.video.exception.VideoInvalidNameException;
 import io.github.nataelienai.dronefeeder.video.exception.VideoNotFoundException;
 import java.io.IOException;
@@ -60,6 +61,7 @@ public class VideoService {
    * @param deliveryId the id of the delivery associate with the video.
    * @return the uploaded video file.
    * @throws IOException in case of an access error.
+   * @throws VideoAlreadyLinkedException when video is already linked with a delivery.
    */
   @Transactional
   public Video upload(MultipartFile file, Long deliveryId) throws IOException {
@@ -70,6 +72,9 @@ public class VideoService {
     video.setSize(size);
     video.setBase64(Base64.getEncoder().encodeToString(file.getBytes()));
     Delivery delivery = deliveryService.findById(deliveryId);
+    if (delivery.getVideoId() != null) {
+      throw new VideoAlreadyLinkedException("Delivery already has a video.");
+    }
     video.setDelivery(delivery);
     Video savedVideo = videoRepository.save(video);
     Long id = savedVideo.getId();

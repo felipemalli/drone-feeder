@@ -3,6 +3,7 @@ package io.github.nataelienai.dronefeeder.exception;
 import io.github.nataelienai.dronefeeder.delivery.Status;
 import io.github.nataelienai.dronefeeder.delivery.exception.DeliveryNotFoundException;
 import io.github.nataelienai.dronefeeder.drone.exception.DroneNotFoundException;
+import io.github.nataelienai.dronefeeder.video.exception.VideoAlreadyLinkedException;
 import io.github.nataelienai.dronefeeder.video.exception.VideoInvalidNameException;
 import io.github.nataelienai.dronefeeder.video.exception.VideoNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,10 @@ public class GlobalExceptionHandler {
    * @return a custom message if the given exception is about the delivery status,
    *     otherwise it returns the exception message.
    */
-  @ExceptionHandler(HttpMessageNotReadableException.class)
+  @ExceptionHandler({
+      HttpMessageNotReadableException.class,
+      VideoAlreadyLinkedException.class,
+  })
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ApiError handleHttpMessageNotReadableException(RuntimeException exception) {
     if (exception.getMessage().contains(Status.class.getName())) {

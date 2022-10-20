@@ -1,5 +1,6 @@
 package io.github.nataelienai.dronefeeder.video;
 
+import io.github.nataelienai.dronefeeder.video.exception.VideoAlreadyLinkedException;
 import io.github.nataelienai.dronefeeder.video.exception.VideoNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -49,6 +50,7 @@ public class VideoController {
    * @param deliveryId the id of the delivery associate with the video.
    * @return the uploaded video file.
    * @throws IOException in case of an access error.
+   * @throws VideoAlreadyLinkedException when video is already linked with a delivery.
    */
   @PostMapping("/upload/delivery/{deliveryId}")
   @ResponseStatus(HttpStatus.OK)
