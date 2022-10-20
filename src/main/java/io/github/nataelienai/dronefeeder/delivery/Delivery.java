@@ -1,6 +1,7 @@
 package io.github.nataelienai.dronefeeder.delivery;
 
 import io.github.nataelienai.dronefeeder.drone.Drone;
+import io.github.nataelienai.dronefeeder.video.Video;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -18,6 +20,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "delivery")
 public class Delivery {
+
+  /**
+   * Attributes.
+   */
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +39,17 @@ public class Delivery {
   @ManyToOne(fetch = FetchType.EAGER, optional = true)
   @JoinColumn(name = "drone_id", nullable = true)
   private Drone drone;
+
+  @JoinColumn(name = "video_id", insertable = false, updatable = false)
+  @OneToOne(targetEntity = Video.class, fetch = FetchType.EAGER, orphanRemoval = true)
+  private Video video;
+
+  @Column(name = "video_id")
+  private Long videoId;
+
+  /**
+   * Methods.
+   */
 
   public Long getId() {
     return id;
@@ -60,6 +77,14 @@ public class Delivery {
 
   public void setDrone(Drone drone) {
     this.drone = drone;
+  }
+
+  public Long getVideoId() {
+    return videoId;
+  }
+
+  public void setVideoId(Long videoId) {
+    this.videoId = videoId;
   }
 
 }

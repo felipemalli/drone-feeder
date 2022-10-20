@@ -43,23 +43,26 @@ public class VideoController {
   }
 
   /**
-   * Upload the file.
+   * Upload the video.
    *
-   * @param file the file of the video to upload.
-   * @return the uploaded file.
+   * @param file the video file to upload.
+   * @param deliveryId the id of the delivery associate with the video.
+   * @return the uploaded video file.
    * @throws IOException in case of an access error.
    */
-  @PostMapping("/upload")
+  @PostMapping("/upload/delivery/{deliveryId}")
   @ResponseStatus(HttpStatus.OK)
-  public Video upload(@RequestBody MultipartFile file) throws IOException {
-    return videoService.upload(file);
+  public Video upload(
+          @RequestBody MultipartFile file, @PathVariable Long deliveryId
+  ) throws IOException {
+    return videoService.upload(file, deliveryId);
   }
 
   /**
-   * Download the file.
+   * Download the video.
    *
-   * @param id the id of the file to download.
-   * @return the file for download.
+   * @param id the id of the video file to download.
+   * @return the video file for download.
    * @throws VideoNotFoundException if a video with {@literal id} does not exist.
    */
   @GetMapping("/download/{id}")

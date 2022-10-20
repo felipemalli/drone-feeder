@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+  /**
+   * NOT_FOUND exception handler.
+   *
+   * @return the exception message.
+   */
   @ExceptionHandler({
       DeliveryNotFoundException.class,
       DroneNotFoundException.class,
@@ -28,6 +33,12 @@ public class GlobalExceptionHandler {
     return new ApiError(exception.getMessage());
   }
 
+  /**
+   * BAD_REQUEST exception handler.
+   *
+   * @return a custom message if the given exception is about the delivery status,
+   *     otherwise it returns the exception message.
+   */
   @ExceptionHandler(HttpMessageNotReadableException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ApiError handleHttpMessageNotReadableException(RuntimeException exception) {
@@ -37,6 +48,11 @@ public class GlobalExceptionHandler {
     return new ApiError(exception.getMessage());
   }
 
+  /**
+   * INTERNAL_SERVER_ERROR exception handler.
+   *
+   * @return the exception message.
+   */
   @ExceptionHandler(Exception.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ApiError handleException(Exception exception) {
