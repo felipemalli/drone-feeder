@@ -37,8 +37,7 @@ public class Video {
   private String base64;
 
   @OneToOne(mappedBy = "video", fetch = FetchType.LAZY,
-          cascade = CascadeType.ALL, optional = true)
-
+          cascade = CascadeType.ALL, optional = false)
   private Delivery delivery;
 
   /**
@@ -72,10 +71,6 @@ public class Video {
 
   public void setBase64(String base64) {
     this.base64 = base64;
-  }
-
-  public void setDelivery(Delivery delivery) {
-    this.delivery = delivery;
   }
 
 }
