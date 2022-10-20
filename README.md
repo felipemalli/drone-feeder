@@ -59,7 +59,7 @@ Você precisará de [Git](https://git-scm.com/downloads), [Docker](https://docs.
 
 1. No terminal, clone o repositório:
 ```sh
-git clone https://github.com/nataelienai/drone-feeder.git
+git clone https://github.com/felipemalli/drone-feeder.git
 ```
 
 2. Entre na pasta do repositório clonado:
