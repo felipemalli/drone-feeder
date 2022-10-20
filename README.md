@@ -1,11 +1,19 @@
-# Boas vindas ao repositório do desafio da Aceleração em Java
+# Drone Feeder
 
-O tema escolhido para esse desáfio foi o Drone Feeder
+Drone Feeder é uma API de armazenamento de informações relativas a entregas e drones, além de servir como um ponto de comunicação entre um front-end e múltiplos drones, onde é possível:
+- Criar, buscar, atualizar e remover uma entrega;
+- Criar, buscar, atualizar e remover um drone;
+- Associar um drone a múltiplas entregas;
+- Enviar, baixar e listar videos de entrega; e
+- Associar um vídeo do drone a uma entrega.
+
+Este projeto foi desenvolvido como um desafio final da Aceleração em Java na Trybe em parceria com a Wipro.
+
 
 # Sumário
 
 - [Contexto](#contexto)
-- [Tecnologias](#tecnologias)
+- [Tecnologias utilizadas](#tecnologias-utilizadas)
 - [Dependências](#dependências)
 - [Como rodar a aplicação](#como-rodar-a-aplicação)
 - [Como rodar os testes](#como-rodar-os-testes)
@@ -13,7 +21,7 @@ O tema escolhido para esse desáfio foi o Drone Feeder
   - [Drone](#drone)
   - [Delivery](#delivery)
   - [Video](#video)
-- [Próximos passos](#Próximos-passos)
+- [Próximos passos](#próximos-passos)
 - [Autores](#autores)
 
 
@@ -33,44 +41,63 @@ O drone, por sua vez, sincronizará informações com o Drone Feeder sempre que 
 
 O CTO da FutuereH confia muito na sua equipe e deu liberdade para eventuais melhorias e modificações na arquitetura proposta.
 
-# Tecnologias
 
-**Back-end:** 
-- Java
-- SpringBoot
-- MySql
-- Docker
+# Tecnologias utilizadas
+
+- **Ferramentas:** Slack, VS Code, IntelliJ, Maven, Git e GitHub.
+- **Linguagem:** Java.
+- **Frameworks, bibliotecas e plugins:** Spring Boot, Spring Web, Spring Data JPA, Spring Boot Dev Tools, JUnit, CheckStyle e JaCoCo.
+- **Banco de dados:** MySQL e H2 (somente nos testes).
+
 
 # Dependências
 
-- spring-boot-starter-data-jpa
-- spring-boot-starter-web
-- spring-boot-devtools
-- h2database
-- mysql-connector-java
-- spring-boot-starter-test
+Você precisará de [Git](https://git-scm.com/downloads), [Docker](https://docs.docker.com/engine/install/) e [Docker Compose](https://docs.docker.com/compose/install/) instalados em sua máquina para executar a aplicação.
+
 
 # Como rodar a aplicação
 
-Clone o repositorio
-
-```bash
-  git@github.com:nataelienai/drone-feeder.git
+1. No terminal, clone o repositório:
+```sh
+git clone https://github.com/nataelienai/drone-feeder.git
 ```
 
-Entre no diretório
-
-```bash
-  cd drone-feeder
+2. Entre na pasta do repositório clonado:
+```sh
+cd drone-feeder
 ```
 
-Instale as dependências e rode a aplicação
-
-```bash
-  mvn install 
+3. Inicialize a aplicação com Docker Compose:
+```sh
+docker compose up
 ```
 
-## Documentação da API
+- Na primeira execução, a inicialização da aplicação pode levar alguns minutos. Aguarde até que apareça a mensagem:
+
+```
+api  | 2022-10-20 03:58:19.613  INFO 48 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+api  | 2022-10-20 03:58:19.618  INFO 48 --- [  restartedMain] i.g.n.d.DroneFeederApplication           : Started DroneFeederApplication in 0.892 seconds (JVM running for 497.837)
+```
+
+
+# Como rodar os testes
+
+1. Com a aplicação já em execução, execute no terminal:
+```sh
+docker compose exec api mvn test
+```
+
+- Ao final da execução, o resultado dos testes será exibido.
+
+2. Para gerar o code coverage dos testes, execute:
+```sh
+mvn jacoco:report
+```
+
+3. Por fim, abra em um navegador o arquivo do diretório `target/site/jacoco/index.html` para visualizar o code coverage.
+
+
+# Documentação da API
 
 ## **Drone**
 
