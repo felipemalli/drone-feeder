@@ -73,4 +73,8 @@ public class Video {
     this.base64 = base64;
   }
 
+  public void setDelivery(Delivery delivery) {
+    this.delivery = delivery;
+  }
+
 }
